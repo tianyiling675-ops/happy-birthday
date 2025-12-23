@@ -17,7 +17,7 @@ if (!fs.existsSync(OUTPUT_DIR)) {
 
 // Check if file already exists
 if (fs.existsSync(OUTPUT_FILE)) {
-  console.log('✓ Model file already exists at public/models/hand_landmarker.task');
+  console.log('✓ Model file already exists at public models/hand_landmarker.task');
   process.exit(0);
 }
 
@@ -42,7 +42,7 @@ https.get(MODEL_URL, (response) => {
     console.warn('⚠ Gesture control may not work without the model file.');
     console.warn('⚠ You can manually download it from:');
     console.warn('  ', MODEL_URL);
-    console.warn('  and place it at: public/models/hand_landmarker.task');
+    console.warn('  and place it at: public models/hand_landmarker.task');
   }
 }).on('error', (err) => {
   fs.unlink(OUTPUT_FILE, () => {});
@@ -50,6 +50,6 @@ https.get(MODEL_URL, (response) => {
   console.warn('⚠ Gesture control may not work without the model file.');
   console.warn('⚠ You can manually download it from:');
   console.warn('  ', MODEL_URL);
-  console.warn('  and place it at: public/models/hand_landmarker.task');
+  console.warn('  and place it at: public models/hand_landmarker.task');
 });
 
