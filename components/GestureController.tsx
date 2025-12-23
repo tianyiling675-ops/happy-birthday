@@ -37,7 +37,27 @@ export const GestureController: React.FC<GestureControllerProps> = ({ onModeChan
         // Model file should be downloaded using: npm run download-model or download-model.bat/.sh
         // 获取 base 路径（支持子路径部署）
         const basePath = import.meta.env.BASE_URL || '/';
-        const modelPath = `${basePath}models/hand_landmarker.task`;
+        // 确保路径以 / 开头，但不重复
+        const normalizedBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
+        // 构建模型文件路径（相对路径）
+        let modelPath = `${normalizedBase}models/hand_landmarker.task`;
+        
+        // 如果是相对路径且不是以 / 开头，添加 /
+        if (!modelPath.startsWith('/') && !modelPath.startsWith('http')) {
+          modelPath = '/' + modelPath;
+        }
+        
+        // 如果 MediaPipe 需要完整 URL，构建它
+        // 检查是否是相对路径，如果是则转换为完整 URL
+        if (!modelPath.startsWith('http')) {
+          // 使用当前页面的 origin 和 base path
+          const origin = window.location.origin;
+          // 移除开头的 /（如果有），因为 normalizedBase 已经包含了
+          const cleanPath = modelPath.startsWith('/') ? modelPath : '/' + modelPath;
+          modelPath = origin + cleanPath;
+        }
+        
+        console.log('Loading MediaPipe model from:', modelPath);
         
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
