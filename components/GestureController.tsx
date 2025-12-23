@@ -35,9 +35,13 @@ export const GestureController: React.FC<GestureControllerProps> = ({ onModeChan
 
         // Use local model file to avoid loading from Google Storage (blocked in China)
         // Model file should be downloaded using: npm run download-model or download-model.bat/.sh
+        // 获取 base 路径（支持子路径部署）
+        const basePath = import.meta.env.BASE_URL || '/';
+        const modelPath = `${basePath}models/hand_landmarker.task`;
+        
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
-            modelAssetPath: `/models/hand_landmarker.task`,
+            modelAssetPath: modelPath,
             delegate: "GPU"
           },
           runningMode: "VIDEO",

@@ -62,11 +62,15 @@ export default function App() {
     setUploadedPhotos(photos);
   };
 
+  // 获取 base 路径（支持子路径部署）
+  const basePath = import.meta.env.BASE_URL || '/';
+  const backgroundImageUrl = `${basePath}starfield-background.png`;
+
   return (
     <div 
       className="w-full h-screen relative"
       style={{
-        backgroundImage: 'url(/starfield-background.png)',
+        backgroundImage: `url(${backgroundImageUrl})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
