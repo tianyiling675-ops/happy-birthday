@@ -35,8 +35,34 @@ jobs:
       - name: Download MediaPipe model
         run: npm run download-model
       
+      - name: Verify model file exists
+        run: |
+          if [ ! -f "public/models/hand_landmarker.task" ]; then
+            echo "Error: Model file not found!"
+            exit 1
+          fi
+          FILE_SIZE=$(stat -f%z public/models/hand_landmarker.task 2>/dev/null || stat -c%s public/models/hand_landmarker.task 2>/dev/null || echo "0")
+          if [ "$FILE_SIZE" -eq "0" ]; then
+            echo "Error: Model file is empty!"
+            exit 1
+          fi
+          echo "Model file size: $FILE_SIZE bytes"
+      
       - name: Build
         run: npm run build
+      
+      - name: Verify model file in dist
+        run: |
+          if [ ! -f "dist/models/hand_landmarker.task" ]; then
+            echo "Error: Model file not found in dist!"
+            exit 1
+          fi
+          FILE_SIZE=$(stat -f%z dist/models/hand_landmarker.task 2>/dev/null || stat -c%s dist/models/hand_landmarker.task 2>/dev/null || echo "0")
+          if [ "$FILE_SIZE" -eq "0" ]; then
+            echo "Error: Model file in dist is empty!"
+            exit 1
+          fi
+          echo "Model file in dist size: $FILE_SIZE bytes"
       
       - name: Copy 404.html to dist
         run: cp 404.html dist/404.html

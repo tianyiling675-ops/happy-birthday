@@ -84,7 +84,8 @@ export const Experience: React.FC<ExperienceProps> = ({ mode, handPosition, uplo
       />
 
       {/* Lighting Setup for Maximum Luxury */}
-      <Environment preset="lobby" background={false} blur={0.8} />
+      {/* 移除 Environment 组件，避免 HDR 文件加载失败 */}
+      {/* <Environment preset="lobby" background={false} blur={0.8} /> */}
       
       <ambientLight intensity={0.2} color="#004422" />
       <spotLight 
