@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday</title>
+    <script>
+      // GitHub Pages SPA 路由支持
+      // 自动重定向到 index.html
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      // 自动检测 base 路径
+      var basePath = '/happy-birthday/';
+      var isRoot = l.pathname === '/' || !l.pathname.startsWith(basePath);
+      
+      // 如果是根路径部署，不需要子路径
+      if (isRoot) {
+        pathSegmentsToKeep = 1;
+      } else if (l.pathname.startsWith(basePath)) {
+        pathSegmentsToKeep = basePath.split('/').filter(Boolean).length + 1;
+      }
+      
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
+
