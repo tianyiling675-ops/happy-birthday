@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Download MediaPipe model
+        run: npm run download-model
+      
       - name: Build
         run: npm run build
       
