@@ -84,15 +84,9 @@ export const Experience: React.FC<ExperienceProps> = ({ mode, handPosition, uplo
       />
 
       {/* Lighting Setup for Maximum Luxury */}
-      {/* 使用 Environment 但设置 files 为 null 来避免加载外部 HDR 文件 */}
-      <Environment 
-        files={null}
-        background={false}
-        environmentIntensity={0.8}
-      />
-      
-      {/* 增加环境光强度，补偿移除 HDR 后的光照损失 */}
-      <ambientLight intensity={0.6} color="#004422" />
+      {/* 移除 Environment 组件，避免 HDR 文件加载失败 */}
+      {/* 使用更强的环境光来补偿 */}
+      <ambientLight intensity={0.8} color="#004422" />
       <spotLight 
         position={[10, 20, 10]} 
         angle={0.2} 
