@@ -84,19 +84,26 @@ export const Experience: React.FC<ExperienceProps> = ({ mode, handPosition, uplo
       />
 
       {/* Lighting Setup for Maximum Luxury */}
-      {/* 移除 Environment 组件，避免 HDR 文件加载失败 */}
-      {/* <Environment preset="lobby" background={false} blur={0.8} /> */}
+      {/* 使用 Environment 但设置 files 为 null 来避免加载外部 HDR 文件 */}
+      <Environment 
+        files={null}
+        background={false}
+        environmentIntensity={0.8}
+      />
       
-      <ambientLight intensity={0.2} color="#004422" />
+      {/* 增加环境光强度，补偿移除 HDR 后的光照损失 */}
+      <ambientLight intensity={0.6} color="#004422" />
       <spotLight 
         position={[10, 20, 10]} 
         angle={0.2} 
         penumbra={1} 
-        intensity={2} 
+        intensity={3.5} 
         color="#fff5cc" 
         castShadow 
       />
-      <pointLight position={[-10, 5, -10]} intensity={1} color="#D4AF37" />
+      <pointLight position={[-10, 5, -10]} intensity={2.5} color="#D4AF37" />
+      <pointLight position={[10, 5, 10]} intensity={2} color="#D4AF37" />
+      <directionalLight position={[0, 15, 5]} intensity={2} color="#fff5cc" />
 
       <group position={[0, -5, 0]}>
         <Foliage mode={mode} count={12000} />

@@ -61,7 +61,11 @@ export const GestureController: React.FC<GestureControllerProps> = ({ onModeChan
         console.error("Error initializing MediaPipe:", error);
         console.warn("Gesture control is unavailable. The app will still work without it.");
         setGestureStatus("Gesture control unavailable");
-        // Don't block the app if gesture control fails
+        // 尝试重新初始化（可能是模型文件加载失败）
+        setTimeout(() => {
+          console.log("Retrying MediaPipe initialization...");
+          setupMediaPipe();
+        }, 2000);
       }
     };
 
@@ -78,9 +82,21 @@ export const GestureController: React.FC<GestureControllerProps> = ({ onModeChan
             setIsLoaded(true);
             setGestureStatus("Waiting for hand...");
           }
-        } catch (err) {
+        } catch (err: any) {
           console.error("Error accessing webcam:", err);
-          setGestureStatus("Permission Denied");
+          if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            setGestureStatus("需要摄像头权限 - 请允许访问");
+          } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+            setGestureStatus("未找到摄像头设备");
+          } else {
+            setGestureStatus(`摄像头错误: ${err.message || err.name}`);
+          }
+          // 显示更详细的错误信息
+          console.warn("摄像头访问失败详情:", {
+            name: err.name,
+            message: err.message,
+            constraint: err.constraint
+          });
         }
       }
     };
